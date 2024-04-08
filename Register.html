@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="style_Userlogin.css">
+</head>
+<body>
+    <section>
+        <div class="leaves">
+            <div class="set">
+                <div><img src="images\leaf_01.png"></div>
+                <div><img src="images\leaf_02.png"></div>
+                <div><img src="images\leaf_03.png"></div>
+                <div><img src="images\leaf_04.png"></div>
+                <div><img src="images\leaf_01.png"></div>
+                <div><img src="images\leaf_02.png"></div>
+                <div><img src="images\leaf_03.png"></div>
+                <div><img src="images\leaf_04.png"></div>
+            </div>
+        </div>
+        <img src="images\bg.jpg" class="bg">
+        <img src="images\girl.png" class="girl">
+        <div class="login">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="inputBox"> 
+                    <input type="text" class="put" name="user" id="username" placeholder="Please enter name" required>
+                    <span id="usernameError" class="error"></span> <!-- 新增的用于显示错误的元素 -->
+                </div>
+                <div class="inputBox password-container">
+                    <input type="password" class="put" name="pwd1" id="password1" placeholder="Please enter password" required>
+                    <span class="eye-icon" onclick="togglePasswordVisibility('password1')">👁️</span>
+                </div>
+                <div class="inputBox password-container">
+                    <input type="password" class="put" name="pwd2" id="password2" placeholder="Confirm Password" required oninput="checkPassword()">
+                    <span class="eye-icon" onclick="togglePasswordVisibility('password2')">👁️</span>
+                    <span id="passwordMismatch" class="error"></span> <!-- 新增的用于显示密码不匹配错误的元素 -->
+                </div>
+                
+                <div class="inputBox">
+                    <input type="submit" value="Register" />
+                    <button type="button" id="btnBack" value="Back" style=" background-color: transparent; /* 清除按钮的背景颜色 */
+                    color: #8f2c24; /* 设置按钮文字颜色为红色 */
+                    border: none; /* 去除按钮边框 */
+                    padding: 10px 20px; /* 设置按钮内边距 */
+                    cursor: pointer; /* 鼠标悬停时显示手型光标 */
+                    font-size: 1.5em; /* 设置字体大小为1.5em */">Back</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function checkPassword() {
+            const password1 = document.getElementById("password1").value;
+            const password2 = document.getElementById("password2").value;
+            const mismatchMsg = document.getElementById("passwordMismatch");
+
+            if (password1 !== password2) {
+                mismatchMsg.textContent = "Passwords do not match!";
+            } else {
+                mismatchMsg.textContent = "";
+            }
+        }
+
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 阻止默认表单提交行为
+
+            // 获取用户输入的数据
+            const username = document.querySelector('input[name="user"]').value;
+            const password1 = document.querySelector('input[name="pwd1"]').value;
+            const password2 = document.querySelector('input[name="pwd2"]').value;
+
+            // 检查密码是否一致
+            if (password1 !== password2) {
+                document.getElementById("passwordMismatch").textContent = "Passwords do not match!";
+                return; // 不一致则停止执行
+            }
+
+            // 检查用户名是否已经存在
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const userExists = users.some(user => user.username === username);
+            if (userExists) {
+                document.getElementById("usernameError").textContent = "Username already in use!";
+                return;
+            }
+
+            // 将用户数据存储到 localStorage 中
+            users.push({ username, password: password1 });
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // 注册成功后跳转到登录页面
+            window.location.href = "Login.html";
+        });
+
+        // 返回按钮的点击事件
+        document.getElementById("btnBack").addEventListener("click", function() {
+            window.location.href = "Login.html";
+        });
+
+        // 密码可见性切换函数
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var eyeIcon = passwordInput.nextElementSibling;
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '👁️';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '👁️‍🗨️';
+            }
+        }
+    </script>
+</body>
+</html>

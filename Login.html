@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Login Page</title>
+    <link rel="stylesheet" href="style_Userlogin.css">
+</head>
+<body>
+    <section>
+        <div class="leaves">
+            <div class="set">
+                <div><img src="images\leaf_01.png"></div>
+                <div><img src="images\leaf_02.png"></div>
+                <div><img src="images\leaf_03.png"></div>
+                <div><img src="images\leaf_04.png"></div>
+                <div><img src="images\leaf_01.png"></div>
+                <div><img src="images\leaf_02.png"></div>
+                <div><img src="images\leaf_03.png"></div>
+                <div><img src="images\leaf_04.png"></div>
+            </div>
+        </div>
+        <img src="images\bg.jpg" class="bg">
+        <img src="images\girl.png" class="girl">
+        <div class="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="inputBox">
+                    <input type="text" name="user" placeholder="Please enter name" required>
+                </div>
+                <div class="inputBox password-container">
+                    <input type="password" name="pwd" id="password" placeholder="Please enter password" required>
+                    <span class="eye-icon" onclick="togglePasswordVisibility()">👁️</span>
+                </div>
+                <div class="inputBox">
+                    <input type="submit" value="Enter" />
+                </div>
+            </form>
+            <div class="group">
+                <a href="Register.html">Register</a>
+            </div>
+            <div class="group">
+                <a href="Cancellation.html">Cancellation </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 阻止默认表单提交行为
+
+            // 获取用户输入的用户名和密码
+            const username = document.querySelector('input[name="user"]').value;
+            const password = document.querySelector('input[name="pwd"]').value;
+
+            // 从 localStorage 中获取用户数据
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+
+            // 查找匹配的用户
+            const matchedUser = users.find(user => user.username === username && user.password === password);
+
+            if (matchedUser) {
+                // 匹配成功，跳转到主页
+                window.location.href = "index.html";
+            } else {
+                // 匹配失败，提示用户输入错误
+                alert("Invalid username or password");
+            }
+        });
+
+        // 密码可见性切换函数
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+            var eyeIcon = document.querySelector('.eye-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '👁️';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '👁️‍🗨️';
+            }
+        }
+    </script>
+</body>
+</html>
